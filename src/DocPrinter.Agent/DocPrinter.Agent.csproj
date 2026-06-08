@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Semantic Kernel marks the Ollama connector and the function-calling / chat-completion
+         surfaces as experimental; we opt in deliberately. -->
+    <NoWarn>$(NoWarn);SKEXP0001;SKEXP0010;SKEXP0070</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocPrinter.Core\DocPrinter.Core.csproj" />
+    <ProjectReference Include="..\DocPrinter.Downloader\DocPrinter.Downloader.csproj" />
+    <ProjectReference Include="..\DocPrinter.Watermark\DocPrinter.Watermark.csproj" />
+    <ProjectReference Include="..\DocPrinter.Printing\DocPrinter.Printing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.77.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.77.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.77.0-alpha" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.6" />
+  </ItemGroup>
+
+</Project>

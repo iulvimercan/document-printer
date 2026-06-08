@@ -1,0 +1,129 @@
+@page "/"
+@rendermode InteractiveServer
+@implements IDisposable
+@inject IDocumentAgent Agent
+@inject IPipelineStatus Status
+@inject BlazorFlipPrompt Flip
+
+<PageTitle>Document Printer</PageTitle>
+
+<h1>Document Printer</h1>
+<p class="text-muted">Tell the assistant which document to print, e.g. <em>"print 2025 TYT"</em>.</p>
+
+<div class="chat-transcript">
+    @foreach (ChatLine line in _messages)
+    {
+        <div class="chat-line @(line.IsUser ? "chat-user" : "chat-bot")">
+            <span class="chat-role">@(line.IsUser ? "you" : "assistant")</span>
+            <span class="chat-text">@line.Text</span>
+        </div>
+    }
+    @if (_busy)
+    {
+        <div class="chat-line chat-bot">
+            <span class="chat-role">assistant</span>
+            <span class="chat-text"><em>working…</em></span>
+        </div>
+    }
+</div>
+
+@if (Status.Current is not PipelineActivity.Idle)
+{
+    <div class="pipeline-status">
+        <span class="status-dot @(IsActive(Status.Current) ? "status-active" : null)"></span>
+        <span>@Describe(Status.Current)</span>
+    </div>
+}
+
+@if (Flip.IsAwaitingFlip)
+{
+    <div class="flip-panel">
+        <p>↻ Even pages printed. Flip the printed stack, reload it into the printer, then continue.</p>
+        <button class="btn btn-primary" @onclick="() => Flip.Confirm()">I've flipped — print odd pages</button>
+        <button class="btn btn-outline-secondary" @onclick="() => Flip.Cancel()">Cancel</button>
+    </div>
+}
+
+<div class="chat-input">
+    <input class="form-control" @bind="_input" @bind:event="oninput"
+           @onkeydown="OnKeyDown" placeholder="Type a message…" disabled="@_busy" />
+    <button class="btn btn-primary" @onclick="SendAsync" disabled="@(_busy || string.IsNullOrWhiteSpace(_input))">
+        Send
+    </button>
+</div>
+
+@code {
+    private readonly List<ChatLine> _messages = new();
+    private string? _input;
+    private bool _busy;
+
+    protected override void OnInitialized()
+    {
+        Status.Changed += OnStateChanged;
+        Flip.Changed += OnStateChanged;
+    }
+
+    private async Task SendAsync()
+    {
+        string? text = _input?.Trim();
+        if (string.IsNullOrEmpty(text) || _busy)
+        {
+            return;
+        }
+
+        _messages.Add(new ChatLine(true, text));
+        _input = string.Empty;
+        _busy = true;
+
+        try
+        {
+            string reply = await Agent.ChatAsync(text);
+            _messages.Add(new ChatLine(false, reply));
+        }
+        catch (Exception ex)
+        {
+            _messages.Add(new ChatLine(false, $"Something went wrong: {ex.Message}"));
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SendAsync();
+        }
+    }
+
+    private void OnStateChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Status.Changed -= OnStateChanged;
+        Flip.Changed -= OnStateChanged;
+    }
+
+    private static bool IsActive(PipelineActivity a) => a is
+        PipelineActivity.Downloading or PipelineActivity.RemovingWatermark or
+        PipelineActivity.DetectingLayout or PipelineActivity.PrintingEvenPages or
+        PipelineActivity.AwaitingFlip or PipelineActivity.PrintingOddPages;
+
+    private static string Describe(PipelineActivity a) => a switch
+    {
+        PipelineActivity.Downloading => "Downloading the document…",
+        PipelineActivity.RemovingWatermark => "Removing the watermark…",
+        PipelineActivity.DetectingLayout => "Detecting the page layout…",
+        PipelineActivity.Ready => "Document ready.",
+        PipelineActivity.PrintingEvenPages => "Printing even pages…",
+        PipelineActivity.AwaitingFlip => "Waiting for you to flip the stack…",
+        PipelineActivity.PrintingOddPages => "Printing odd pages…",
+        PipelineActivity.Completed => "Done.",
+        PipelineActivity.Failed => "Something went wrong.",
+        _ => string.Empty,
+    };
+
+    private sealed record ChatLine(bool IsUser, string Text);
+}

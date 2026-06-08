@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="PdfPig" Version="0.1.10" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DocPrinter.Core\DocPrinter.Core.csproj" />
+    <ProjectReference Include="..\..\src\DocPrinter.Watermark\DocPrinter.Watermark.csproj" />
+    <ProjectReference Include="..\..\src\DocPrinter.Downloader\DocPrinter.Downloader.csproj" />
+    <ProjectReference Include="..\..\src\DocPrinter.Printing\DocPrinter.Printing.csproj" />
+    <ProjectReference Include="..\..\src\DocPrinter.Agent\DocPrinter.Agent.csproj" />
+    <ProjectReference Include="..\..\src\DocPrinter.Web\DocPrinter.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

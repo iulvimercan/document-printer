@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocPrinter.Core\DocPrinter.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DocPrinter.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PdfPig" Version="0.1.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.16" />
+  </ItemGroup>
+
+  <!-- Ship the bundled portable SumatraPDF alongside the app output. -->
+  <ItemGroup>
+    <None Include="..\..\tools\SumatraPDF\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>tools\SumatraPDF\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

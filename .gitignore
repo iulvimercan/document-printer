@@ -1,0 +1,46 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Rr]elease/
+artifacts/
+
+# .NET / Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+project.lock.json
+*.lock.json
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+coverage/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Playwright browser binaries / downloads
+.playwright/
+bin/Debug/net9.0/.playwright/
+
+# Local working data (downloaded/processed exam PDFs)
+work/
+downloads/
+*.pdf
+
+# Bundled third-party portable binary (download separately — see README)
+tools/SumatraPDF/
+
+# OS
+Thumbs.db
+.DS_Store

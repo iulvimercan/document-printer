@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>884789aa-4f40-467f-85f6-f06ea96bf907</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocPrinter.Core\DocPrinter.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Playwright" Version="1.60.0" />
+    <PackageReference Include="AngleSharp" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.16" />
+  </ItemGroup>
+
+</Project>
