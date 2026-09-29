@@ -2,14 +2,14 @@
 
 A .NET 9 app that turns a multi-step document chore into one chat message: say which past exam paper you want, and it downloads the PDF, removes the watermark overlay and prints it double-sided with a guided paper flip.
 
-> 🛠️ Personal project (2026). I built it to automate the printing side of my own exam prep, and as a hands-on project for Semantic Kernel tool-calling agents.
+> 🛠️ Personal project (2026). I built it to automate the printing side of the exam prep, and as a hands-on project for Semantic Kernel tool-calling agents.
 
 [![CI](https://github.com/iulvimercan/document-printer/actions/workflows/ci.yml/badge.svg)](https://github.com/iulvimercan/document-printer/actions/workflows/ci.yml)
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4)
 ![Blazor](https://img.shields.io/badge/Blazor-Server-512BD4)
 ![Semantic Kernel](https://img.shields.io/badge/Semantic%20Kernel-1.77-0078D4)
 
-<!-- TODO: add a screenshot of the Blazor chat with the pipeline status and the flip panel (no source-site branding or watermarked pages in the image) -->
+<img src="docs/empty-chat.png" alt="Document Printer chat screen in the Blazor web app" width="300">
 
 ## ✨ Features
 - **Chat to print.** Ask for a document by year and session in plain language. The assistant asks for anything that's missing and turns down unsupported requests.
@@ -85,8 +85,6 @@ Tests tagged `Category=Live` hit the real site, model, sample PDF and printer. T
 
 ## 📜 Project history
 The repository was published as a single snapshot of a project I developed locally, so the commit history doesn't show the step-by-step development.
-
-<!-- TODO: add a LinkedIn link in a "📬 Contact" section -->
 
 ## 📄 License
 Released under the [MIT License](LICENSE).
