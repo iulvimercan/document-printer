@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    # Printing shells out to SumatraPDF, so the app targets Windows; CI runs there too.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - run: dotnet restore DocPrinter.sln
+      - run: dotnet build DocPrinter.sln --no-restore -c Release
+      - run: dotnet test DocPrinter.sln --no-build -c Release --filter "Category!=Live" --verbosity normal
